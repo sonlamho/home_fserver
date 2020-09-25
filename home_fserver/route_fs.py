@@ -25,4 +25,4 @@ def login():
 def index():
     if request.method == 'POST':
         pass
-    return 'fs.index under construction'
+    return render_template('index.html')

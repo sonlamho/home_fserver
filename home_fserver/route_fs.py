@@ -8,8 +8,8 @@ from flask import (
     send_from_directory
 )
 from werkzeug.utils import secure_filename
-# from werkzeug.security import check_password_hash, generate_password_hash
-# from .data_checks import file_types
+from werkzeug.security import check_password_hash, generate_password_hash
+from .utils import NAV
 
 bp = Blueprint('fs', __name__, url_prefix='/fs')
 
@@ -25,4 +25,11 @@ def login():
 def index():
     if request.method == 'POST':
         pass
-    return render_template('index.html')
+    return render_template('index.html', NAV=NAV, path='')
+
+
+@bp.route('/<path:fpath>', methods=('GET', 'POST'))
+def index_path(fpath):
+    if request.method == 'POST':
+        pass
+    return render_template('index.html', NAV=NAV, path=fpath)

@@ -1,7 +1,5 @@
 """__init__.py"""
-
 import os
-
 from flask import Flask, url_for, redirect
 from typing import Optional, Mapping
 

@@ -9,6 +9,7 @@ from werkzeug import generate_password_hash
 DIR = os.path.realpath(os.path.dirname(__file__))
 
 PSWD_HASH_PATH = os.path.join(DIR, 'password_hash.txt')
+CONFIG_PATH = os.path.realpath(os.path.join(DIR, '../instance/config.py'))
 
 
 def set_password() -> None:
@@ -23,6 +24,26 @@ def set_password() -> None:
             f.write(generate_password_hash(p))
         print(f'Password hash successfully saved at {PSWD_HASH_PATH}')
     return None
+
+
+def generate_secrey_key() -> None:
+    print(f'new key will be at\n {CONFIG_PATH}')
+    if not os.path.exists(CONFIG_PATH):
+        with open(CONFIG_PATH, 'w') as f:
+            f.write('\n\n')
+    with open(CONFIG_PATH, 'r') as f:
+        lines = f.readlines()
+    pos = -1
+    for i, line in enumerate(lines):
+        if re.match(r'SECRET_KEY *=.*', line):
+            pos = i
+    new_line = f'SECRET_KEY = {str(os.urandom(16))}'
+    if pos < 0:
+        lines.append(new_line)
+    else:
+        lines[pos] = new_line
+    with open(CONFIG_PATH, 'w') as f:
+        f.write('\n'.join(lines) + '\n')
 
 
 class SizeOnDisk(object):
@@ -86,6 +107,13 @@ NAV = Navigator()
 
 if __name__ == '__main__':
     if '--help' in sys.argv:
-        print("Run this file with --set-pass to set the password")
-    if '--set-pass' in sys.argv:
+        print("""
+        - Run this file with --set-pass to set the password
+        - Or run with --generate-key to generate secrey key and save in
+          config.py
+        """)
+    elif '--set-pass' in sys.argv:
         set_password()
+    elif '--generate-key' in sys.argv:
+        generate_secrey_key()
+

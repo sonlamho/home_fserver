@@ -25,11 +25,11 @@ def login():
 def index():
     if request.method == 'POST':
         pass
-    return render_template('index.html', NAV=NAV, path='')
+    return render_template('index.html', NAV=NAV, relpath='')
 
 
-@bp.route('/<path:fpath>', methods=('GET', 'POST'))
-def index_path(fpath):
+@bp.route('/<path:relpath>', methods=('GET', 'POST'))
+def index_path(relpath):
     if request.method == 'POST':
         pass
-    return render_template('index.html', NAV=NAV, path=fpath)
+    return render_template('index.html', NAV=NAV, relpath=relpath)

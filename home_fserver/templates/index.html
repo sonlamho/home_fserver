@@ -9,7 +9,44 @@
 {% block content %}
 <div>
 
+<h3>
+{% if relpath.strip('/ ') %}
+{{ relpath.strip('/ ') }}
+{% else %}
+{{ 'Root folder' }}
+{% endif %}
+</h3>
 
-
+<hr>
+<table id="files_table" style="width:100%;text-align:left;" class="display dataTable">
+  <thead>
+    <tr><th> </th><th>Name</th><th>Size</th></tr>
+  </thead>
+  <tbody>
+  {% for is_folder, fname, size in NAV.get_folder_items(relpath) %}
+    <tr>
+      {% if is_folder %}
+        {% set icon = '📁' %}
+      {% else %}
+        {% set icon = '' %}
+      {% endif %}
+      <td> {{ icon }}</td>
+      <td> {{ fname }}</td>
+      <td> {{ size }}</td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
 </div>
+
+
+<script>
+$(document).ready( function () {
+  $('#files_table').DataTable({
+    "paging": false, "searching": true,  "order": [[ 2, "asc" ]]
+  });
+} );
+</script>
+
+
 {% endblock %}

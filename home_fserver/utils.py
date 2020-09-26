@@ -43,7 +43,7 @@ def generate_secrey_key() -> None:
     else:
         lines[pos] = new_line
     with open(CONFIG_PATH, 'w') as f:
-        f.write('\n'.join(lines) + '\n')
+        f.write('\n'.join(lines).strip() + '\n')
 
 
 class SizeOnDisk(object):

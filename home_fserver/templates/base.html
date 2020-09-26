@@ -11,7 +11,11 @@
     <h1>Home File Server</h1>
     <ul>
         <li><a href={{ url_for('fs.index') }}> Home </a> </li>
-        <li><a href={{ url_for('fs.login') }}> Log in </a> </li>
+        {% if g.user %}
+            <li><a href={{ url_for('fs.logout') }}> Log out </a> </li>
+        {% else %}
+            <li><a href={{ url_for('fs.login') }}> Log in </a> </li>
+        {% endif %}
     </ul>
 </nav>
 

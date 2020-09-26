@@ -1,8 +1,27 @@
 
+import sys
 import os
 from typing import List
 from functools import lru_cache
+from getpass import getpass
+from werkzeug import generate_password_hash
 DIR = os.path.realpath(os.path.dirname(__file__))
+
+PSWD_HASH_PATH = os.path.join(DIR, 'password_hash.txt')
+
+
+def set_password() -> None:
+    print('Set your password.')
+    p = getpass()
+    print('Enter the same password again to confirm.')
+    p2 = getpass()
+    if p != p2:
+        print('Confirmation failed. Password not set.')
+    else:
+        with open(PSWD_HASH_PATH, 'w') as f:
+            f.write(generate_password_hash(p))
+        print(f'Password hash successfully saved at {PSWD_HASH_PATH}')
+    return None
 
 
 class SizeOnDisk(object):
@@ -60,3 +79,9 @@ class Navigator(object):
 
 
 NAV = Navigator()
+
+if __name__ == '__main__':
+    if '--help' in sys.argv:
+        print("Run this file with --set-pass to set the password")
+    if '--set-pass' in sys.argv:
+        set_password()

@@ -43,8 +43,20 @@
   {% endfor %}
   </tbody>
 </table>
+
+<hr>
+
+<div>
+  <h4> Upload </h4>
+  <form enctype="multipart/form-data" method="post">
+    <input type="file" name="file" id="file" required>
+    <input type="submit" name="upload" value="Upload!">
+  </form>
 </div>
 
+<hr>
+
+</div>
 
 <script>
 $(document).ready( function () {
@@ -53,6 +65,5 @@ $(document).ready( function () {
   });
 } );
 </script>
-
 
 {% endblock %}

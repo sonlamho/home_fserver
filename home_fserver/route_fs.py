@@ -32,4 +32,7 @@ def index():
 def index_path(relpath):
     if request.method == 'POST':
         pass
-    return render_template('index.html', NAV=NAV, relpath=relpath)
+    if NAV.is_folder(relpath):
+        return render_template('index.html', NAV=NAV, relpath=relpath)
+    else:
+        return send_from_directory(NAV.BASE_DIR, relpath)

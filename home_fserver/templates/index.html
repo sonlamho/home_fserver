@@ -31,7 +31,7 @@
         {% set icon = '' %}
       {% endif %}
       <td> {{ icon }}</td>
-      <td> {{ fname }}</td>
+      <td> <a href={{ url_for('fs.index_path', relpath='/'.join([relpath, fname]).strip(' /')) }}>{{ fname }}</a></td>
       <td> {{ size }}</td>
     </tr>
   {% endfor %}
@@ -43,7 +43,7 @@
 <script>
 $(document).ready( function () {
   $('#files_table').DataTable({
-    "paging": false, "searching": true,  "order": [[ 2, "asc" ]]
+    "paging": false, "searching": true,  "order": [[0, "desc"], [ 1, "asc" ]]
   });
 } );
 </script>

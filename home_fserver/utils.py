@@ -10,7 +10,7 @@ class SizeOnDisk(object):
         self.s = size
 
     @lru_cache()
-    def __repr__(self):
+    def __repr__(self) -> str:
         # TODO
         if self.s < (1 << 10):
             return f'{self.s} B'
@@ -22,8 +22,14 @@ class SizeOnDisk(object):
             return f'{round(self.s / (1 << 30), 2)} GB'
         return ''
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.__repr__()
+
+    def __eq__(self, other) -> bool:
+        return self.s == other.s
+
+    def __lt__(self, other) -> bool:
+        return self.s < other.s
 
 
 class Navigator(object):

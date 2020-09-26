@@ -11,7 +11,10 @@ from werkzeug import generate_password_hash
 DIR = os.path.realpath(os.path.dirname(__file__))
 
 PSWD_HASH_PATH = os.path.join(DIR, 'password_hash.txt')
-CONFIG_PATH = os.path.realpath(os.path.join(DIR, '../instance/config.py'))
+INSTANCE_PATH = os.path.realpath(os.path.join(DIR, '../instance'))
+CONFIG_PATH = os.path.join(INSTANCE_PATH, 'config.py')
+if not os.path.exists(INSTANCE_PATH):
+    os.mkdir(INSTANCE_PATH)
 
 
 def set_password() -> None:

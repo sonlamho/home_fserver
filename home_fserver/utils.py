@@ -31,7 +31,7 @@ def set_password() -> None:
 def generate_secrey_key() -> None:
     print(f'new key will be at\n {CONFIG_PATH}')
     if not os.path.exists(CONFIG_PATH):
-        with open(CONFIG_PATH, 'w') as f:
+        with open(CONFIG_PATH, 'x') as f:
             f.write('\n')
     with open(CONFIG_PATH, 'r') as f:
         lines = f.readlines()

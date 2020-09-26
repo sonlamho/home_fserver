@@ -2,14 +2,14 @@
 route_datachecks.py
 Blue print for '/datachecks' route
 """
-import os
 import functools
 from flask import (
     Blueprint, flash, g, redirect, render_template, request, session, url_for,
     send_from_directory
 )
-from werkzeug.utils import secure_filename
-from werkzeug.security import check_password_hash, generate_password_hash
+# from werkzeug.utils import secure_filename
+import time
+from werkzeug.security import check_password_hash
 from .utils import NAV, PSWD_HASH_PATH
 
 bp = Blueprint('fs', __name__, url_prefix='/fs')
@@ -33,6 +33,7 @@ def login():
             session.clear()
             session['logged_in'] = 1
             print(session)
+            time.sleep(0.5)
             return redirect(url_for('fs.index'))
         else:
             session.clear()

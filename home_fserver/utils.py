@@ -30,7 +30,6 @@ class SizeOnDisk(object):
 
     @lru_cache()
     def __repr__(self) -> str:
-        # TODO
         if self.s < (1 << 10):
             return f'{self.s} B'
         elif self.s < (1 << 20):

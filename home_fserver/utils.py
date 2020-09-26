@@ -20,7 +20,7 @@ class SizeOnDisk(object):
             return f'{round(self.s / (1 << 20), 2)} MB'
         elif self.s < (1 << 40):
             return f'{round(self.s / (1 << 30), 2)} GB'
-        return ''
+        return str(self.s)
 
     def __str__(self) -> str:
         return self.__repr__()
@@ -30,6 +30,9 @@ class SizeOnDisk(object):
 
     def __lt__(self, other) -> bool:
         return self.s < other.s
+
+    def __hash__(self) -> int:
+        return hash(self.s)
 
 
 class Navigator(object):

@@ -30,20 +30,20 @@ def generate_secrey_key() -> None:
     print(f'new key will be at\n {CONFIG_PATH}')
     if not os.path.exists(CONFIG_PATH):
         with open(CONFIG_PATH, 'w') as f:
-            f.write('\n\n')
+            f.write('\n')
     with open(CONFIG_PATH, 'r') as f:
         lines = f.readlines()
     pos = -1
     for i, line in enumerate(lines):
         if re.match(r'SECRET_KEY *=.*', line):
             pos = i
-    new_line = f'SECRET_KEY = {str(os.urandom(16))}'
+    new_line = f'SECRET_KEY = {str(os.urandom(16))}\n'
     if pos < 0:
         lines.append(new_line)
     else:
         lines[pos] = new_line
     with open(CONFIG_PATH, 'w') as f:
-        f.write('\n'.join(lines).strip() + '\n')
+        f.writelines(lines)
 
 
 class SizeOnDisk(object):
@@ -116,4 +116,3 @@ if __name__ == '__main__':
         set_password()
     elif '--generate-key' in sys.argv:
         generate_secrey_key()
-

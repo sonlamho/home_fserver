@@ -31,7 +31,7 @@ def set_password() -> None:
     return None
 
 
-def generate_secrey_key() -> None:
+def generate_secret_key() -> None:
     print(f'new key will be at\n {CONFIG_PATH}')
     if not os.path.exists(CONFIG_PATH):
         with open(CONFIG_PATH, 'x') as f:
@@ -49,6 +49,18 @@ def generate_secrey_key() -> None:
         lines[pos] = new_line
     with open(CONFIG_PATH, 'w') as f:
         f.writelines(lines)
+
+
+def get_secret_key_hex() -> str:
+    p = os.path.dirname(CONFIG_PATH)
+    sys.path.append(p)
+    try:
+        from config import SECRET_KEY  # type: ignore
+    except ImportError:
+        generate_secret_key()
+        from config import SECRET_KEY  # type: ignore
+    sys.path.remove(p)
+    return SECRET_KEY.hex()
 
 
 class SizeOnDisk(object):
@@ -121,4 +133,4 @@ if __name__ == '__main__':
     elif '--set-pass' in sys.argv:
         set_password()
     elif '--generate-key' in sys.argv:
-        generate_secrey_key()
+        generate_secret_key()

@@ -26,7 +26,15 @@
   <tbody>
   {% if good_relpath %}
     <tr>
-      <td>📁</td><td><a href={{ url_for('fs.index_path', relpath=NAV.get_dotdot(good_relpath)) }}>..</a></td><td></td>
+      <td>📁</td>
+      <td>
+        {% if secret %}
+          <a href={{ url_for('secret_index_path', relpath=NAV.get_dotdot(good_relpath)) }}>..</a>
+        {% else %}
+          <a href={{ url_for('fs.index_path', relpath=NAV.get_dotdot(good_relpath)) }}>..</a>
+        {% endif %}
+      </td>
+      <td></td>
     </tr>
   {% endif %}
   {% for is_folder, fname, size in NAV.get_folder_items(relpath) %}
@@ -37,7 +45,13 @@
         {% set icon = '' %}
       {% endif %}
       <td> {{ icon }}</td>
-      <td> <a href={{ url_for('fs.index_path', relpath='/'.join([relpath, fname]).strip(' /')) }}>{{ fname }}</a></td>
+      <td>
+        {% if secret %}
+          <a href={{ url_for('secret_index_path', relpath='/'.join([relpath, fname]).strip(' /')) }}>{{ fname }}</a>
+        {% else %}
+          <a href={{ url_for('fs.index_path', relpath='/'.join([relpath, fname]).strip(' /')) }}>{{ fname }}</a>
+        {% endif %}
+      </td>
       <td> {{ size }}</td>
     </tr>
   {% endfor %}

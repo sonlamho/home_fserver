@@ -25,19 +25,11 @@ def create_app(test_config: Optional[Mapping] = None) -> Flask:
     except OSError:
         pass
 
-    # --- register blueprint(s) ---
-    # from . import route_datachecks
-    # app.register_blueprint(route_datachecks.bp)
-
-    # @app.route('/')
-    # def datachecks():
-    #     return redirect(url_for('datachecks.index'))
-
     from . import route_fs
     app.register_blueprint(route_fs.bp)
 
     @app.route('/')
-    def datachecks():
+    def fs():
         return redirect(url_for('fs.index'))
 
     return app

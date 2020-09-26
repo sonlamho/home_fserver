@@ -3,13 +3,13 @@ route_fs.py
 Blue print for '/fs' route
 """
 import os
+import time
 import functools
 from flask import (
     Blueprint, flash, g, redirect, render_template, request, session, url_for,
     send_from_directory
 )
 from werkzeug.utils import secure_filename
-import time
 from werkzeug.security import check_password_hash
 from .utils import NAV, PSWD_HASH_PATH
 

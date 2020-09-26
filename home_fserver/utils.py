@@ -1,4 +1,6 @@
-
+"""
+utils.py
+"""
 import sys
 import os
 import re
@@ -103,6 +105,7 @@ class Navigator(object):
         return up1.strip('/')
 
 
+# This object will be available in jinja templates to get file system data
 NAV = Navigator()
 
 if __name__ == '__main__':

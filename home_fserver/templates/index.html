@@ -9,11 +9,12 @@
 {% block content %}
 <div>
 
+{% set good_relpath = relpath.strip('/ ') %}
 <h3>
-{% if relpath.strip('/ ') %}
-{{ relpath.strip('/ ') }}
+{% if good_relpath %}
+  {{ good_relpath }}
 {% else %}
-{{ 'Root folder' }}
+  {{ 'Root folder' }}
 {% endif %}
 </h3>
 
@@ -23,6 +24,11 @@
     <tr><th> </th><th>Name</th><th>Size</th></tr>
   </thead>
   <tbody>
+  {% if good_relpath %}
+    <tr>
+      <td>📁</td><td><a href={{ url_for('fs.index_path', relpath=NAV.get_dotdot(good_relpath)) }}>..</a></td><td></td>
+    </tr>
+  {% endif %}
   {% for is_folder, fname, size in NAV.get_folder_items(relpath) %}
     <tr>
       {% if is_folder %}

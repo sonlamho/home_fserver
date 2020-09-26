@@ -1,6 +1,7 @@
 
 import sys
 import os
+import re
 from typing import List
 from functools import lru_cache
 from getpass import getpass
@@ -65,7 +66,7 @@ class Navigator(object):
     def is_folder(self, relpath: str) -> bool:
         return os.path.isdir(self.full_path(relpath))
 
-    def get_folder_items(self, relpath) -> List:
+    def get_folder_items(self, relpath: str) -> List:
         """returns list of tuples (is_folder, fname, size)"""
         items = []
         for fname in os.listdir(self.full_path(relpath)):
@@ -75,6 +76,10 @@ class Navigator(object):
             items.append((is_folder, fname, SizeOnDisk(size)))
         sorted(items, key=lambda r: r[1])  # sort by fname
         return items
+
+    def get_dotdot(self, relpath: str) -> str:
+        up1 = re.sub(r'/[^/]+$', '', '/' + relpath.strip('/'), count=1)
+        return up1.strip('/')
 
 
 NAV = Navigator()

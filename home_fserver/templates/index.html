@@ -1,7 +1,8 @@
 
 {% extends 'base.html' %}
 
-{% block title %} FS | Home {% endblock %}
+{% set foldername = NAV.get_fname_from_path(relpath) %}
+{% block title %} FS | {{ foldername }}  {% endblock %}
 
 {% block header %}
 {% endblock %}
@@ -9,10 +10,10 @@
 {% block content %}
 <div>
 
-{% set good_relpath = relpath.strip('/ ') %}
+{% set good_relpath = relpath.strip('/') %}
 <h3>
 {% if good_relpath %}
-  {{ good_relpath }}
+  {{ foldername }}
 {% else %}
   {{ 'Root folder' }}
 {% endif %}

@@ -115,6 +115,13 @@ class Navigator(object):
         up1 = re.sub(r'/[^/]+$', '', '/' + relpath.strip('/'), count=1)
         return up1.strip('/')
 
+    def get_fname_from_path(self, path: str) -> str:
+        path = path.strip('/ ')
+        if path:
+            return re.findall(r'/[^/]+$', '/' + path.strip('/'))[0].strip('/')
+        else:
+            return ''
+
 
 # This object will be available in jinja templates to get file system data
 NAV = Navigator()

@@ -11,9 +11,10 @@ from flask import (
 )
 from werkzeug.utils import secure_filename
 from werkzeug.security import check_password_hash
-from .utils import NAV, PSWD_HASH_PATH
+from .utils import NAV, PSWD_HASH_PATH, get_config
 
 bp = Blueprint('fs', __name__, url_prefix='/fs')
+ALLOW_SECRET = get_config().get('ALLOW_SECRET')
 
 
 def login_required(view):
@@ -64,7 +65,8 @@ def index():
         handle_upload('')
         return redirect(url_for('fs.index'))
     print(session)
-    return render_template('index.html', NAV=NAV, relpath='')
+    return render_template('index.html', NAV=NAV, relpath='',
+                           ALLOW_SECRET=ALLOW_SECRET)
 
 
 @bp.route('/<path:relpath>', methods=('GET', 'POST'))
@@ -74,7 +76,8 @@ def index_path(relpath):
         handle_upload(relpath)
         return redirect(url_for('fs.index_path', relpath=relpath))
     if NAV.is_folder(relpath):
-        return render_template('index.html', NAV=NAV, relpath=relpath)
+        return render_template('index.html', NAV=NAV, relpath=relpath,
+                               ALLOW_SECRET=ALLOW_SECRET)
     else:
         return send_from_directory(NAV.BASE_DIR, relpath)
 

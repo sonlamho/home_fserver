@@ -69,6 +69,11 @@
 </div>
 
 <hr>
+{% if (not secret) and ALLOW_SECRET %}
+  <div style="text-align:right;">
+  <a href={{ url_for('secret_index_path', relpath='') }}>Secret path</a>
+  </div>
+{% endif %}
 
 </div>
 

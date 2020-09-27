@@ -4,7 +4,7 @@ utils.py
 import sys
 import os
 import re
-from typing import List
+from typing import List, Dict
 from functools import lru_cache
 from getpass import getpass
 from werkzeug import generate_password_hash
@@ -51,16 +51,12 @@ def generate_secret_key() -> None:
         f.writelines(lines)
 
 
-def get_secret_key_hex() -> str:
-    p = os.path.dirname(CONFIG_PATH)
-    sys.path.append(p)
-    try:
-        from config import SECRET_KEY  # type: ignore
-    except ImportError:
-        generate_secret_key()
-        from config import SECRET_KEY  # type: ignore
-    sys.path.remove(p)
-    return SECRET_KEY.hex()
+@lru_cache()
+def get_config() -> Dict:
+    with open(CONFIG_PATH, 'r') as f:
+        exec(f.read())
+    del f
+    return dict(locals())
 
 
 class SizeOnDisk(object):

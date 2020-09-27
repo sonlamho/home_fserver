@@ -19,6 +19,9 @@
 {% endif %}
 </h3>
 
+{% set index_route = 'secret_index_path' if secret else 'fs.index_path' %}
+
+
 <hr>
 <table id="files_table" style="width:100%;text-align:left;" class="display dataTable">
   <thead>
@@ -29,11 +32,7 @@
     <tr>
       <td>📁</td>
       <td>
-        {% if secret %}
-          <a href={{ url_for('secret_index_path', relpath=NAV.get_dotdot(good_relpath)) }}>..</a>
-        {% else %}
-          <a href={{ url_for('fs.index_path', relpath=NAV.get_dotdot(good_relpath)) }}>..</a>
-        {% endif %}
+        <a href={{ url_for(index_route, relpath=NAV.get_dotdot(good_relpath)) }}>..</a>
       </td>
       <td></td>
     </tr>
@@ -47,11 +46,7 @@
       {% endif %}
       <td> {{ icon }}</td>
       <td>
-        {% if secret %}
-          <a href={{ url_for('secret_index_path', relpath='/'.join([relpath, fname]).strip(' /')) }}>{{ fname }}</a>
-        {% else %}
-          <a href={{ url_for('fs.index_path', relpath='/'.join([relpath, fname]).strip(' /')) }}>{{ fname }}</a>
-        {% endif %}
+        <a href={{ url_for(index_route, relpath='/'.join([relpath, fname]).strip(' /')) }}>{{ fname }}</a>
       </td>
       <td> {{ size }}</td>
     </tr>
@@ -72,7 +67,7 @@
 <hr>
 {% if (not secret) and ALLOW_SECRET %}
   <div style="text-align:right;">
-  <a href={{ url_for('secret_index_path', relpath='') }}>Secret path</a>
+  <a href={{ url_for('secret_index_path', relpath=relpath) }}>Secret path</a>
   </div>
 {% endif %}
 

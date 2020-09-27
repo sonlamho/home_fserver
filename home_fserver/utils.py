@@ -4,7 +4,7 @@ utils.py
 import sys
 import os
 import re
-from typing import List, Dict
+from typing import List, Dict, Tuple, Any
 from functools import lru_cache
 from getpass import getpass
 from werkzeug import generate_password_hash
@@ -52,7 +52,7 @@ def generate_secret_key() -> None:
 
 
 @lru_cache()
-def get_config() -> Dict:
+def get_config() -> Dict[str, Any]:
     with open(CONFIG_PATH, 'r') as f:
         exec(f.read())
     del f
@@ -100,7 +100,9 @@ class Navigator(object):
     def is_folder(self, relpath: str) -> bool:
         return os.path.isdir(self.full_path(relpath))
 
-    def get_folder_items(self, relpath: str) -> List:
+    def get_folder_items(
+            self, relpath: str
+            ) -> List[Tuple[bool, str, SizeOnDisk]]:
         """returns list of tuples (is_folder, fname, size)"""
         items = []
         for fname in os.listdir(self.full_path(relpath)):

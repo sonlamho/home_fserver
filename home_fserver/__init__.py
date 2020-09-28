@@ -1,9 +1,6 @@
 """__init__.py"""
 import os
 from flask import Flask, url_for, redirect
-from flask import request, render_template, send_from_directory
-from .utils import NAV
-from .route_fs import handle_upload
 from typing import Optional, Mapping
 
 
@@ -30,31 +27,17 @@ def create_app(test_config: Optional[Mapping] = None) -> Flask:
 
     from . import route_fs
     app.register_blueprint(route_fs.bp)
-    SECRET_PATH = os.urandom(16).hex()
+
     ALLOW_SECRET = app.config.get('ALLOW_SECRET')
-    print('ALLOW_SECRET =', ALLOW_SECRET)
+    print(app.config)
 
     @app.route('/')
     def fs():
         return redirect(url_for('fs.index'))
 
     if ALLOW_SECRET:
-        @app.route(f'/{SECRET_PATH}/', methods=('GET', 'POST'))
-        def secret_index():
-            if request.method == 'POST':
-                pass
-            return render_template('index.html', NAV=NAV, relpath='',
-                                   secret=True, ALLOW_SECRET=ALLOW_SECRET)
-
-        @app.route(f'/{SECRET_PATH}/<path:relpath>', methods=('GET', 'POST'))
-        def secret_index_path(relpath):
-            if request.method == 'POST':
-                pass
-            if NAV.is_folder(relpath):
-                return render_template('index.html', NAV=NAV, relpath=relpath,
-                                       secret=True, ALLOW_SECRET=ALLOW_SECRET)
-            else:
-                return send_from_directory(NAV.BASE_DIR, relpath)
+        from . import route_secret
+        app.register_blueprint(route_secret.bp)
 
     return app
 

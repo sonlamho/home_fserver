@@ -19,7 +19,7 @@
 {% endif %}
 </h3>
 
-{% set index_route = 'secret_index_path' if secret else 'fs.index_path' %}
+{% set index_route = 'secret.index_path' if secret else 'fs.index_path' %}
 
 
 <hr>
@@ -67,7 +67,7 @@
 <hr>
 {% if (not secret) and ALLOW_SECRET %}
   <div style="text-align:right;">
-  <a href={{ url_for('secret_index_path', relpath=relpath) }}>Secret path</a>
+  <a href={{ url_for('secret.index_path', relpath=relpath) }}>Secret path</a>
   </div>
 {% endif %}
 

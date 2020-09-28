@@ -1,8 +1,7 @@
 
 import os
 from flask import (
-    Blueprint, render_template, request,
-    send_from_directory
+    Blueprint, render_template, request, send_from_directory
 )
 from .utils import NAV, get_config
 

@@ -54,15 +54,36 @@
   </tbody>
 </table>
 
-<hr>
 
+{% if not secret %}
+<hr>
 <div>
-  <h4> Upload </h4>
-  <form enctype="multipart/form-data" method="post">
-    <input type="file" name="file" id="file" required>
-    <input type="submit" name="upload" value="Upload!">
-  </form>
+  <h4> Action </h4>
+  <table style="width:80%;" class="display dataTable">
+    <tbody>
+    <tr>
+      <td style="width:20%">Upload</td>
+      <td>
+      <form enctype="multipart/form-data" method="post">
+        <input type="file" name="file" id="file" required>
+        <input type="submit" name="upload" value="Upload!">
+      </form>
+      </td>
+    </tr>
+    <tr>
+      <td style="width:20%">Create Folder</td>
+      <td>
+      <form method="post" autocomplete="off">
+        <input type="text" name="new_folder_name" id="new_folder_name" required>
+        <input type="submit" name="create_folder" value="Create folder">
+      </form>
+      </td>
+    </tr>
+    </tbody>
+  </table>
 </div>
+{% endif %}
+
 
 <hr>
 {% if (not secret) and ALLOW_SECRET %}

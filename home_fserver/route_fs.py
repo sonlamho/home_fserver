@@ -65,6 +65,8 @@ def index():
             handle_upload('')
         elif 'create_folder' in request.form:
             NAV.create_folder('', request.form['new_folder_name'])
+        elif 'delete' in request.form:
+            print(request.form['filename'])
         return redirect(url_for('fs.index'))
     print(session)
     return render_template('index.html', NAV=NAV, relpath='',
@@ -80,6 +82,8 @@ def index_path(relpath):
             handle_upload(relpath)
         elif 'create_folder' in request.form:
             NAV.create_folder('', request.form['new_folder_name'])
+        elif 'delete' in request.form:
+            print(request.form['filename'])
         return redirect(url_for('fs.index_path', relpath=relpath))
     if NAV.is_folder(relpath):
         return render_template('index.html', NAV=NAV, relpath=relpath,

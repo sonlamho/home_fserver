@@ -129,6 +129,12 @@ class Navigator(object):
         else:
             return ''
 
+    def truncated_str(self, s: str, maxlen: int = 50) -> str:
+        if len(s) <= maxlen:
+            return s
+        else:
+            return s[:maxlen - 3] + '...'
+
 
 # This object will be available in jinja templates to get file system data
 NAV = Navigator()

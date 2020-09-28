@@ -20,6 +20,7 @@
 </h3>
 
 {% set index_route = 'secret.index_path' if secret else 'fs.index_path' %}
+{% set folder_items = NAV.get_folder_items(relpath) %}
 
 
 <hr>
@@ -37,7 +38,7 @@
       <td></td>
     </tr>
   {% endif %}
-  {% for is_folder, fname, size in NAV.get_folder_items(relpath) %}
+  {% for is_folder, fname, size in folder_items %}
     <tr>
       {% if is_folder %}
         {% set icon = '📁' %}
@@ -64,19 +65,33 @@
     <tr>
       <td style="width:20%">Upload</td>
       <td>
-      <form enctype="multipart/form-data" method="post">
-        <input type="file" name="file" id="file" required>
-        <input type="submit" name="upload" value="Upload!">
-      </form>
+        <form enctype="multipart/form-data" method="post">
+          <input type="file" name="file" id="file" required>
+          <input type="submit" name="upload" value="Upload!">
+        </form>
       </td>
     </tr>
     <tr>
       <td style="width:20%">Create Folder</td>
       <td>
-      <form method="post" autocomplete="off">
-        <input type="text" name="new_folder_name" id="new_folder_name" required>
-        <input type="submit" name="create_folder" value="Create folder">
-      </form>
+        <form method="post" autocomplete="off">
+          <input type="text" name="new_folder_name" id="new_folder_name" required>
+          <input type="submit" name="create_folder" value="Create folder">
+        </form>
+      </td>
+    </tr>
+    <tr>
+      <td style="width:20%">Delete</td>
+      <td>
+        <form method="post">
+          <select name="filename" id="file-to-delete" required>
+          <option value="">--Choose a file to delete--</option>
+          {% for _, fn, _ in folder_items %}
+            <option value="{{ fn }}">{{ NAV.truncated_str(fn, 50) }}</option>
+          {% endfor %}
+          </select>
+          <input type="submit" name="delete" value="Delete!">
+        </form>
       </td>
     </tr>
     </tbody>

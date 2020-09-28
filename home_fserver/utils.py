@@ -94,10 +94,22 @@ class Navigator(object):
     def __init__(self) -> None:
         pass
 
-    def create_folder(self, relpath, fname):
+    def create_folder(self, relpath: str, fname: str) -> None:
         new_folder_full = os.path.join(self.full_path(relpath), fname)
         if not os.path.exists(new_folder_full):
             os.mkdir(new_folder_full)
+
+    def attempt_delete(self, relpath: str, fname: str) -> str:
+        fullpath = os.path.join(self.full_path(relpath), fname)
+        if os.path.isdir(fullpath):
+            if os.listdir(fullpath):
+                return "Folder is not empty! No action taken."
+            else:
+                os.rmdir(fullpath)
+                return f"Folder '{fname}' deleted."
+        else:
+            os.remove(fullpath)
+            return f"File '{fname}' deleted."
 
     def full_path(self, relpath: str) -> str:
         return os.path.join(self.BASE_DIR, relpath.strip(' /'))

@@ -56,17 +56,27 @@ def handle_upload(relpath: str) -> None:
         f.save(os.path.join(NAV.full_path(relpath), filename))
 
 
+def handle_post(relpath: str) -> None:
+    print(request.form)
+    if 'upload' in request.form:
+        handle_upload(relpath)
+    elif 'create_folder' in request.form:
+        fname = secure_filename(request.form['new_folder_name'])
+        NAV.create_folder(relpath, fname)
+    elif 'delete' in request.form:
+        print(f"Request to delete {request.form['filename']}")
+        if 'del-confirm' in request.form:
+            msg = NAV.attempt_delete(relpath, request.form['filename'])
+            flash(msg)
+        else:
+            flash("No action taken.")
+
+
 @bp.route('/', methods=('GET', 'POST'))
 @login_required
 def index():
     if request.method == 'POST':
-        print(request.form)
-        if 'upload' in request.form:
-            handle_upload('')
-        elif 'create_folder' in request.form:
-            NAV.create_folder('', request.form['new_folder_name'])
-        elif 'delete' in request.form:
-            print(request.form['filename'])
+        handle_post('')
         return redirect(url_for('fs.index'))
     print(session)
     return render_template('index.html', NAV=NAV, relpath='',
@@ -77,13 +87,7 @@ def index():
 @login_required
 def index_path(relpath):
     if request.method == 'POST':
-        print(request.form)
-        if 'upload' in request.form:
-            handle_upload(relpath)
-        elif 'create_folder' in request.form:
-            NAV.create_folder('', request.form['new_folder_name'])
-        elif 'delete' in request.form:
-            print(request.form['filename'])
+        handle_post(relpath)
         return redirect(url_for('fs.index_path', relpath=relpath))
     if NAV.is_folder(relpath):
         return render_template('index.html', NAV=NAV, relpath=relpath,

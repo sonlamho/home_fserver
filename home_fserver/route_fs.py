@@ -15,6 +15,7 @@ from .utils import NAV, PSWD_HASH_PATH, get_config
 
 bp = Blueprint('fs', __name__, url_prefix='/fs')
 ALLOW_SECRET = get_config().get('ALLOW_SECRET')
+ALLOW_DELETE = get_config().get('ALLOW_DELETE')
 
 
 def login_required(view):
@@ -63,7 +64,7 @@ def handle_post(relpath: str) -> None:
     elif 'create_folder' in request.form:
         fname = secure_filename(request.form['new_folder_name'])
         NAV.create_folder(relpath, fname)
-    elif 'delete' in request.form:
+    elif 'delete' in request.form and ALLOW_DELETE:
         print(f"Request to delete {request.form['filename']}")
         if 'del-confirm' in request.form:
             msg = NAV.attempt_delete(relpath, request.form['filename'])
@@ -80,7 +81,8 @@ def index():
         return redirect(url_for('fs.index'))
     print(session)
     return render_template('index.html', NAV=NAV, relpath='',
-                           ALLOW_SECRET=ALLOW_SECRET)
+                           ALLOW_SECRET=ALLOW_SECRET,
+                           ALLOW_DELETE=ALLOW_DELETE)
 
 
 @bp.route('/<path:relpath>', methods=('GET', 'POST'))
@@ -90,8 +92,10 @@ def index_path(relpath):
         handle_post(relpath)
         return redirect(url_for('fs.index_path', relpath=relpath))
     if NAV.is_folder(relpath):
+        print(session)
         return render_template('index.html', NAV=NAV, relpath=relpath,
-                               ALLOW_SECRET=ALLOW_SECRET)
+                               ALLOW_SECRET=ALLOW_SECRET,
+                               ALLOW_DELETE=ALLOW_DELETE)
     else:
         return send_from_directory(NAV.BASE_DIR, relpath)
 

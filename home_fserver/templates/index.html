@@ -80,23 +80,25 @@
         </form>
       </td>
     </tr>
-    <tr>
-      <td style="width:20%">Delete</td>
-      <td>
-        <form method="post">
-          {% set _ = folder_items.sort() %}
-          <select name="filename" id="file-to-delete" required>
-          <option value="">--Choose a file/folder to delete--</option>
-          {% for _, fn, _ in folder_items %}
-            <option value="{{ fn }}">{{ NAV.truncated_str(fn, 50) }}</option>
-          {% endfor %}
-          </select><br>
-          <input type="checkbox" id="del-confirm" name="del-confirm" value="del-confirm">
-          <label for="del-confirm">I understand this is permanent deletion</label><br>
-          <input type="submit" name="delete" value="Delete!">
-        </form>
-      </td>
-    </tr>
+    {% if ALLOW_DELETE %}
+      <tr>
+        <td style="width:20%">Delete</td>
+        <td>
+          <form method="post">
+            {% set _ = folder_items.sort() %}
+            <select name="filename" id="file-to-delete" required>
+            <option value="">--Choose a file/folder to delete--</option>
+            {% for _, fn, _ in folder_items %}
+              <option value="{{ fn }}">{{ NAV.truncated_str(fn, 50) }}</option>
+            {% endfor %}
+            </select><br>
+            <input type="checkbox" id="del-confirm" name="del-confirm" value="del-confirm">
+            <label for="del-confirm">I understand this is permanent deletion</label><br>
+            <input type="submit" name="delete" value="Delete!">
+          </form>
+        </td>
+      </tr>
+    {% endif %}
     </tbody>
   </table>
 </div>

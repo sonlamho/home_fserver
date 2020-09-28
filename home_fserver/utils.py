@@ -94,6 +94,11 @@ class Navigator(object):
     def __init__(self) -> None:
         pass
 
+    def create_folder(self, relpath, fname):
+        new_folder_full = os.path.join(self.full_path(relpath), fname)
+        if not os.path.exists(new_folder_full):
+            os.mkdir(new_folder_full)
+
     def full_path(self, relpath: str) -> str:
         return os.path.join(self.BASE_DIR, relpath.strip(' /'))
 

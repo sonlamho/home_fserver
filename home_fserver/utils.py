@@ -27,7 +27,6 @@ def set_password() -> None:
         print('Confirmation failed. Password not set.')
     else:
         hash_p = sha256(p.encode('utf-8')).hexdigest()
-        print(hash_p)
         with open(PSWD_HASH_PATH, 'w') as f:
             f.write(generate_password_hash(hash_p))
         print(f'Password hash successfully saved at {PSWD_HASH_PATH}')

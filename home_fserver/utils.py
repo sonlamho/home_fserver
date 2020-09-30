@@ -8,8 +8,9 @@ from typing import List, Dict, Tuple, Any
 from functools import lru_cache
 from getpass import getpass
 from werkzeug import generate_password_hash
-DIR = os.path.realpath(os.path.dirname(__file__))
+from hashlib import sha256
 
+DIR = os.path.realpath(os.path.dirname(__file__))
 PSWD_HASH_PATH = os.path.join(DIR, 'password_hash.txt')
 INSTANCE_PATH = os.path.realpath(os.path.join(DIR, '../instance'))
 CONFIG_PATH = os.path.join(INSTANCE_PATH, 'config.py')
@@ -25,8 +26,10 @@ def set_password() -> None:
     if p != p2:
         print('Confirmation failed. Password not set.')
     else:
+        hash_p = sha256(p.encode('utf-8')).hexdigest()
+        print(hash_p)
         with open(PSWD_HASH_PATH, 'w') as f:
-            f.write(generate_password_hash(p))
+            f.write(generate_password_hash(hash_p))
         print(f'Password hash successfully saved at {PSWD_HASH_PATH}')
     return None
 

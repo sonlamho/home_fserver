@@ -30,9 +30,10 @@ def login_required(view):
 @bp.route('/login', methods=('GET', 'POST'))
 def login():
     if request.method == 'POST':
+        print(request.form)
         with open(PSWD_HASH_PATH, 'r') as f:
             h = f.read()
-        if check_password_hash(h, request.form['password']):
+        if check_password_hash(h, request.form['pswd_hash']):
             session.clear()
             session['logged_in'] = 1
             print(session)

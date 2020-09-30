@@ -11,15 +11,27 @@
 <h3> Log In </h3>
 
 <script type="text/javascript" charset="utf8" src={{ url_for('static', filename='sha256.min.js') }}></script>
+<script>
+  function submitLogin(){
+    let p_in = document.getElementById('password');
+    let hash = sha256(p_in.value);
+    let h_in = document.getElementById('pswd_hash');
+    h_in.value = hash;
+    p_in.value = "";
+    let form = document.getElementById('login-form');
+    form.submit();
+  }
+</script>
 
 <hr>
 
-  <form method="post">
+  <form method="post" id="login-form">
     <!-- <label for="username">Username</label> -->
     <!-- <input name="username" id="username" required> -->
     <label for="password">Password</label>
-    <input type="password" name="password" id="password" required>
-    <input type="submit" value="Submit">
+    <input type="password" name="password" id="password">
+    <input type="hidden" name="pswd_hash" id="pswd_hash">
+    <button onclick="submitLogin()">Submit</button>
   </form>
 
 

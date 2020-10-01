@@ -7,4 +7,6 @@
 - Unless running only on LAN or you know what you're doing, you should always deploy the server with https only. Sending infos without TLS (https) will make your server accessible to other people on the internet.
 
 ### Deployment instructions
-(Work in progress)
+- Copy or symlink the folder you want to share into `home_fserver/www/`
+- Example nginx configurations: ... (Work in progress)
+- Run `scripts/run_production.sh` script to start the server. (Correct nginx config required.)

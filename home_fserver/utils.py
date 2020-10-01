@@ -11,51 +11,51 @@ from werkzeug import generate_password_hash
 from hashlib import sha256
 
 DIR = os.path.realpath(os.path.dirname(__file__))
-PSWD_HASH_PATH = os.path.join(DIR, 'password_hash.txt')
-INSTANCE_PATH = os.path.realpath(os.path.join(DIR, '../instance'))
-CONFIG_PATH = os.path.join(INSTANCE_PATH, 'config.py')
+PSWD_HASH_PATH = os.path.join(DIR, "password_hash.txt")
+INSTANCE_PATH = os.path.realpath(os.path.join(DIR, "../instance"))
+CONFIG_PATH = os.path.join(INSTANCE_PATH, "config.py")
 if not os.path.exists(INSTANCE_PATH):
     os.mkdir(INSTANCE_PATH)
 
 
 def set_password() -> None:
-    print('Set your password.')
+    print("Set your password.")
     p = getpass()
-    print('Enter the same password again to confirm.')
+    print("Enter the same password again to confirm.")
     p2 = getpass()
     if p != p2:
-        print('Confirmation failed. Password not set.')
+        print("Confirmation failed. Password not set.")
     else:
-        hash_p = sha256(p.encode('utf-8')).hexdigest()
-        with open(PSWD_HASH_PATH, 'w') as f:
+        hash_p = sha256(p.encode("utf-8")).hexdigest()
+        with open(PSWD_HASH_PATH, "w") as f:
             f.write(generate_password_hash(hash_p))
-        print(f'Password hash successfully saved at {PSWD_HASH_PATH}')
+        print(f"Password hash successfully saved at {PSWD_HASH_PATH}")
     return None
 
 
 def generate_secret_key() -> None:
-    print(f'new key will be at\n {CONFIG_PATH}')
+    print(f"new key will be at\n {CONFIG_PATH}")
     if not os.path.exists(CONFIG_PATH):
-        with open(CONFIG_PATH, 'x') as f:
-            f.write('\n')
-    with open(CONFIG_PATH, 'r') as f:
+        with open(CONFIG_PATH, "x") as f:
+            f.write("\n")
+    with open(CONFIG_PATH, "r") as f:
         lines = f.readlines()
     pos = -1
     for i, line in enumerate(lines):
-        if re.match(r'SECRET_KEY *=.*', line):
+        if re.match(r"SECRET_KEY *=.*", line):
             pos = i
-    new_line = f'SECRET_KEY = {str(os.urandom(16))}\n'
+    new_line = f"SECRET_KEY = {str(os.urandom(16))}\n"
     if pos < 0:
         lines.append(new_line)
     else:
         lines[pos] = new_line
-    with open(CONFIG_PATH, 'w') as f:
+    with open(CONFIG_PATH, "w") as f:
         f.writelines(lines)
 
 
 @lru_cache()
 def get_config() -> Dict[str, Any]:
-    with open(CONFIG_PATH, 'r') as f:
+    with open(CONFIG_PATH, "r") as f:
         exec(f.read())
     del f
     return dict(locals())
@@ -68,13 +68,13 @@ class SizeOnDisk(object):
     @lru_cache()
     def __repr__(self) -> str:
         if self.s < (1 << 10):
-            return f'{self.s} B'
+            return f"{self.s} B"
         elif self.s < (1 << 20):
-            return f'{round(self.s / (1 << 10), 2)} KB'
+            return f"{round(self.s / (1 << 10), 2)} KB"
         elif self.s < (1 << 30):
-            return f'{round(self.s / (1 << 20), 2)} MB'
+            return f"{round(self.s / (1 << 20), 2)} MB"
         elif self.s < (1 << 40):
-            return f'{round(self.s / (1 << 30), 2)} GB'
+            return f"{round(self.s / (1 << 30), 2)} GB"
         return str(self.s)
 
     def __str__(self) -> str:
@@ -91,7 +91,7 @@ class SizeOnDisk(object):
 
 
 class Navigator(object):
-    BASE_DIR = os.path.join(DIR, 'www')
+    BASE_DIR = os.path.join(DIR, "www")
 
     def __init__(self) -> None:
         pass
@@ -114,14 +114,12 @@ class Navigator(object):
             return f"File '{fname}' deleted."
 
     def full_path(self, relpath: str) -> str:
-        return os.path.join(self.BASE_DIR, relpath.strip(' /'))
+        return os.path.join(self.BASE_DIR, relpath.strip(" /"))
 
     def is_folder(self, relpath: str) -> bool:
         return os.path.isdir(self.full_path(relpath))
 
-    def get_folder_items(
-            self, relpath: str
-            ) -> List[Tuple[bool, str, SizeOnDisk]]:
+    def get_folder_items(self, relpath: str) -> List[Tuple[bool, str, SizeOnDisk]]:
         """returns list of tuples (is_folder, fname, size)"""
         items = []
         for fname in os.listdir(self.full_path(relpath)):
@@ -133,34 +131,36 @@ class Navigator(object):
         return items
 
     def get_dotdot(self, relpath: str) -> str:
-        up1 = re.sub(r'/[^/]+$', '', '/' + relpath.strip('/'), count=1)
-        return up1.strip('/')
+        up1 = re.sub(r"/[^/]+$", "", "/" + relpath.strip("/"), count=1)
+        return up1.strip("/")
 
     def get_fname_from_path(self, path: str) -> str:
-        path = path.strip('/ ')
+        path = path.strip("/ ")
         if path:
-            return re.findall(r'/[^/]+$', '/' + path.strip('/'))[0].strip('/')
+            return re.findall(r"/[^/]+$", "/" + path.strip("/"))[0].strip("/")
         else:
-            return ''
+            return ""
 
     def truncated_str(self, s: str, maxlen: int = 50) -> str:
         if len(s) <= maxlen:
             return s
         else:
-            return s[:maxlen - 3] + '...'
+            return s[: maxlen - 3] + "..."
 
 
 # This object will be available in jinja templates to get file system data
 NAV = Navigator()
 
-if __name__ == '__main__':
-    if '--help' in sys.argv:
-        print("""
+if __name__ == "__main__":
+    if "--help" in sys.argv:
+        print(
+            """
         - Run this file with --set-pass to set the password
         - Or run with --generate-key to generate secrey key and save in
           config.py
-        """)
-    elif '--set-pass' in sys.argv:
+        """
+        )
+    elif "--set-pass" in sys.argv:
         set_password()
-    elif '--generate-key' in sys.argv:
+    elif "--generate-key" in sys.argv:
         generate_secret_key()

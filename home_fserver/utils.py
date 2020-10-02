@@ -24,7 +24,7 @@ def initialize() -> None:
     set_password"""
     if os.path.exists(CONFIG_PATH):
         print("Config.py already exists. Aborting")
-    shutil.copy(os.path.join(INSTANCE_PATH, 'example.config.py'), 'config.py')
+    shutil.copy(os.path.join(INSTANCE_PATH, "example.config.py"), "config.py")
     generate_secret_key()
     set_password()
 
@@ -163,17 +163,19 @@ class Navigator(object):
 NAV = Navigator()
 
 if __name__ == "__main__":
+    help_message = """
+    - Run with --init to initialize config.py, generate key, and set password
+    - Or run with --set-pass to set the password
+    - Or run with --generate-key to generate secrey key and save in
+      config.py
+    """
     if "--help" in sys.argv:
-        print(
-            """
-        - Run this file with --set-pass to set the password
-        - Or run with --generate-key to generate secrey key and save in
-          config.py
-        """
-        )
+        print(help_message)
+    elif "--init" in sys.argv:
+        initialize()
     elif "--set-pass" in sys.argv:
         set_password()
     elif "--generate-key" in sys.argv:
         generate_secret_key()
-    elif "--init" in sys.argv:
-        initialize()
+    else:
+        print(help_message)

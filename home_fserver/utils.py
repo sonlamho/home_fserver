@@ -3,6 +3,7 @@ utils.py
 """
 import sys
 import os
+import shutil
 import re
 from typing import List, Dict, Tuple, Any
 from functools import lru_cache
@@ -11,11 +12,21 @@ from werkzeug import generate_password_hash
 from hashlib import sha256
 
 DIR = os.path.realpath(os.path.dirname(__file__))
-PSWD_HASH_PATH = os.path.join(DIR, "password_hash.txt")
 INSTANCE_PATH = os.path.realpath(os.path.join(DIR, "../instance"))
 CONFIG_PATH = os.path.join(INSTANCE_PATH, "config.py")
+PSWD_HASH_PATH = os.path.join(INSTANCE_PATH, "password_hash.txt")
 if not os.path.exists(INSTANCE_PATH):
     os.mkdir(INSTANCE_PATH)
+
+
+def initialize() -> None:
+    """Initialize a config.py from example.config.py, generate_secret_key, and then
+    set_password"""
+    if os.path.exists(CONFIG_PATH):
+        print("Config.py already exists. Aborting")
+    shutil.copy(os.path.join(INSTANCE_PATH, 'example.config.py'), 'config.py')
+    generate_secret_key()
+    set_password()
 
 
 def set_password() -> None:
@@ -164,3 +175,5 @@ if __name__ == "__main__":
         set_password()
     elif "--generate-key" in sys.argv:
         generate_secret_key()
+    elif "--init" in sys.argv:
+        initialize()

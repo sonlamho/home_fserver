@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 
+
 {% block title %} FS | Login {% endblock %}
 
 {% block header %}
@@ -10,7 +11,7 @@
 
 <h3> Log In </h3>
 
-<script type="text/javascript" charset="utf8" src={{ url_for('static', filename='sha256.min.js') }}></script>
+<script src="https://cdn.jsdelivr.net/npm/js-sha256@0.9.0/build/sha256.min.js"></script>
 <script>
   function submitLogin(){
     let p_in = document.getElementById('password');

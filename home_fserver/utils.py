@@ -24,6 +24,7 @@ def initialize() -> None:
     set_password"""
     if os.path.exists(CONFIG_PATH):
         print("Config.py already exists. Aborting")
+        return
     shutil.copy(os.path.join(INSTANCE_PATH, "example.config.py"), CONFIG_PATH)
     generate_secret_key()
     set_password()

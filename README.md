@@ -12,10 +12,12 @@
   that hash is sent to the server to be checked with the saved hash+salt.
 - Unless running only on LAN or you know what you're doing, you should always
   deploy the server with https only. Sending infos without TLS (https) will make
-  your server accessible to other people on the internet.
+  your files accessible to other people on the internet.
 
 ### Deployment instructions
 - Copy or symlink the folder you want to share into `home_fserver/www/`
+- Running dev server:
+  `./scripts/run_dev.sh`
 - Example nginx configurations: ... (Work in progress)
 - Run `scripts/run_production.sh` script to start the server. (Correct nginx
   config required.)

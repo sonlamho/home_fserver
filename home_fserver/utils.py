@@ -8,7 +8,7 @@ import re
 from typing import List, Dict, Tuple, Any
 from functools import lru_cache
 from getpass import getpass
-from werkzeug import generate_password_hash
+from werkzeug.security import generate_password_hash
 from hashlib import sha256
 
 DIR = os.path.realpath(os.path.dirname(__file__))
